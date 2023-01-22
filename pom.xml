@@ -14,7 +14,7 @@
 	<name>filmorate</name>
 	<description>Приложение для выбора фильма</description>
 	<properties>
-		<maven.compiler.release>11</maven.compiler.release>
+		<java.version>11</java.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -26,8 +26,6 @@
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.24</version>
-			<scope>provided</scope>
 		</dependency>
 
 		<dependency>
