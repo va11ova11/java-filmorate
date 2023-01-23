@@ -12,10 +12,11 @@ import java.net.http.HttpResponse;
 import java.time.LocalDate;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.controllerTest.utilForTest.LocalDateAdapter;
 
-
+@SpringBootTest
 public class FilmValidationTest {
 
   private static URI filmUri;
