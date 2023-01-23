@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import jakarta.validation.Valid;
-import jakarta.validation.constraints.NotNull;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

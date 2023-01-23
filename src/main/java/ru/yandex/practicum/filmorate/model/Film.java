@@ -1,13 +1,12 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Past;
-import jakarta.validation.constraints.PastOrPresent;
-import jakarta.validation.constraints.Positive;
-import jakarta.validation.constraints.Size;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
 import java.time.LocalDate;
+import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Value;
 
@@ -17,6 +16,7 @@ import lombok.Value;
 public class Film {
   int id;
   @NotEmpty(message = "Film name is required")
+      @NotEmpty
   String name;
   @NotEmpty(message = "Film description is required")
   @Size(max = 200, message = "Description length should be no more than 200 characters.")
