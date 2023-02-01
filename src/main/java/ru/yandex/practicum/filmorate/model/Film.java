@@ -1,11 +1,11 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import java.time.LocalDate;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
 import javax.validation.constraints.Positive;
-import java.time.LocalDate;
 import javax.validation.constraints.Size;
 import lombok.Builder;
 import lombok.Value;
@@ -14,6 +14,7 @@ import lombok.Value;
 @Value
 @Builder(toBuilder = true)
 public class Film {
+
   int id;
   @NotEmpty(message = "Film name is required")
   String name;

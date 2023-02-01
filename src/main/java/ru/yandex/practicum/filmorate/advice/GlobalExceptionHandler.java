@@ -12,21 +12,26 @@ import ru.yandex.practicum.filmorate.exception.ValidationException;
 @ControllerAdvice
 @Slf4j
 public class GlobalExceptionHandler {
+
   @ExceptionHandler
   public ResponseEntity<ErrorMessage> catchResourceNotFoundException(ValidationException e) {
     log.error(e.getMessage(), e);
-    return new ResponseEntity<>(new ErrorMessage(e.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(new ErrorMessage(e.getMessage(), HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler
-  public ResponseEntity<ErrorMessage> catchResourceNotFoundException(MethodArgumentNotValidException e) {
+  public ResponseEntity<ErrorMessage> catchResourceNotFoundException(
+      MethodArgumentNotValidException e) {
     log.error(e.getMessage(), e);
-    return new ResponseEntity<>(new ErrorMessage(e.getMessage(), HttpStatus.BAD_REQUEST.value()), HttpStatus.BAD_REQUEST);
+    return new ResponseEntity<>(new ErrorMessage(e.getMessage(), HttpStatus.BAD_REQUEST.value()),
+        HttpStatus.BAD_REQUEST);
   }
 
   @ExceptionHandler
   public ResponseEntity<ErrorMessage> catchResourceNotFoundException(NotFoundException e) {
     log.error(e.getMessage(), e);
-    return new ResponseEntity<>(new ErrorMessage(e.getMessage(), HttpStatus.NOT_FOUND.value()), HttpStatus.NOT_FOUND);
+    return new ResponseEntity<>(new ErrorMessage(e.getMessage(), HttpStatus.NOT_FOUND.value()),
+        HttpStatus.NOT_FOUND);
   }
 }

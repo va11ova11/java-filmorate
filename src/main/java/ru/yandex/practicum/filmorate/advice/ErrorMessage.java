@@ -1,6 +1,7 @@
 package ru.yandex.practicum.filmorate.advice;
 
 public class ErrorMessage {
+
   private String message;
   private int statusCode;
 
@@ -8,6 +9,7 @@ public class ErrorMessage {
     this.statusCode = statusCode;
     this.message = message;
   }
+
   public int getStatusCode() {
     return statusCode;
   }
