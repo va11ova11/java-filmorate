@@ -1,7 +1,5 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import static ru.yandex.practicum.filmorate.validator.FilmValidator.validateFilm;
-
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -28,7 +26,7 @@ public class FilmController {
 
   @PostMapping
   public Film addFilm(@RequestBody @NotNull @Valid Film film) throws ValidationException {
-    validateFilm(film);
+    //validateFilm(film);
     film = film.toBuilder().id(++filmId).build();
     films.put(film.getId(), film);
     log.trace("Validation has been successfully, the new movie has been successfully added.");
@@ -38,7 +36,7 @@ public class FilmController {
   @PutMapping
   public Film updateFilm(@RequestBody @NotNull @Valid Film film)
       throws ValidationException, NotFoundException {
-    validateFilm(film);
+    //validateFilm(film);
     if (films.containsKey(film.getId())) {
       films.put(film.getId(), film);
       log.trace("The movie has been successfully updated.");

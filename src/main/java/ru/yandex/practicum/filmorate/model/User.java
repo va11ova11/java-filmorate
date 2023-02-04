@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
+import java.util.Set;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -25,4 +26,11 @@ public class User {
   @Past
   @JsonFormat(pattern = "yyyy-MM-dd")
   LocalDate birthday;
+  Set<Long> friends;
+  public void addFriend(Long id) {
+    friends.add(id);
+  }
+  public void deleteFriend(Long id) {
+    friends.remove(id);
+  }
 }
