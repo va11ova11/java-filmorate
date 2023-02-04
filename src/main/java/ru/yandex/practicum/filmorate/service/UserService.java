@@ -6,7 +6,8 @@ import java.util.List;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.user.FriendOperationException;
+import ru.yandex.practicum.filmorate.exception.user.UserAlreadyExistException;
+import ru.yandex.practicum.filmorate.exception.user.UserNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
@@ -45,8 +46,8 @@ public class UserService {
     User user = userStorage.get(id);
     User friend = userStorage.get(friendId);
 
-    if(user.getFriends().contains(friendId)) {
-      throw new FriendOperationException("Friend has already been added");
+    if (user.getFriends().contains(friendId)) {
+      throw new UserAlreadyExistException("Friend has already been added");
     } else {
       user.addFriend(friendId);
       friend.addFriend(id);
@@ -68,7 +69,7 @@ public class UserService {
       return user;
     }
     else {
-      throw new FriendOperationException("Delete friend not found");
+      throw new UserNotFoundException("Deleted fried not found");
     }
   }
 
@@ -85,7 +86,7 @@ public class UserService {
     Set<Long> friendsId1 = userStorage.get(id).getFriends();
     Set<Long> friendsId2 = userStorage.get(otherId).getFriends();
 
-    if(friendsId1.isEmpty() || friendsId2.isEmpty()) {
+    if(friendsId1 == null || friendsId2.isEmpty()) {
       return new ArrayList<>();
     }
 
