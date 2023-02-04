@@ -3,21 +3,22 @@ package ru.yandex.practicum.filmorate.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDate;
 import javax.validation.constraints.Email;
-import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
 import lombok.Builder;
 import lombok.Value;
+import ru.yandex.practicum.filmorate.validator.annotation.SpaceValidation;
 
 @Value
 @Builder(toBuilder = true)
 public class User {
-
-  int id;
-  @NotEmpty(message = "Email is required")
+  Long id;
+  @NotNull(message = "Email is required")
   @Email
   String email;
-  @NotEmpty(message = "Login is required")
+  @NotBlank(message = "Login is required")
+  @SpaceValidation(message = "Login contains space")
   String login;
   String name;
   @NotNull(message = "Birthday is required")

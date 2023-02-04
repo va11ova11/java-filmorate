@@ -10,7 +10,7 @@ import org.junit.jupiter.api.Test;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 
-public class UserValidationTest {
+public class ReleaseDateValidationTest {
 
   private User user;
 
