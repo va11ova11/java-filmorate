@@ -11,7 +11,7 @@ import ru.yandex.practicum.filmorate.validator.SpaceValidator;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = SpaceValidator.class)
-public @interface SpaceValidation {
+public @interface ContainsSpace {
   String message();
   Class<?>[] groups() default {};
   Class<? extends Payload>[] payload() default {};

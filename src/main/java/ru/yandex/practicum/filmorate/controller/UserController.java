@@ -6,6 +6,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,66 +24,53 @@ public class UserController {
 
   private final UserService userService;
 
+  @Autowired
   public UserController(UserService userService) {
     this.userService = userService;
   }
 
   @PostMapping
   public User addUser(@RequestBody @NotNull @Valid User user) {
-    User newUser =  userService.addUser(user);
-    log.debug("Validation passed, a new user {}, was successfully added.", newUser.getName());
-    return newUser;
+   return userService.addUser(user);
   }
 
   @PutMapping
   public User updateUser(@RequestBody @NotNull @Valid User user) {
-    User updateUser =  userService.updateUser(user);
-    log.debug("User {} has been updated", updateUser.getName());
-    return updateUser;
+    return userService.updateUser(user);
   }
 
   @GetMapping
   public Collection<User> getAllUsers() {
-    Collection<User> users = userService.getAll();
-    log.debug("Users has been received");
-    return users;
+    return userService.getAll();
   }
 
   @GetMapping("{id}")
   public User getUser(@NotNull @Positive @PathVariable Long id) {
-    User user = userService.getUserById(id);
-    log.debug("User {} has been received by Id - {}", user.getName(), id);
-    return user;
+    return userService.getUserById(id);
   }
 
   @PutMapping(value = "/{id}/friends/{friendId}")
   public User addFriend(@NotNull @Positive @PathVariable Long id,
                         @NotNull @Positive @PathVariable Long friendId) {
-    User user =  userService.addFriendById(id, friendId);
-    log.debug("New friend has been added");
-    return user;
+
+    return userService.addFriendById(id, friendId);
   }
 
   @DeleteMapping(value = "/{id}/friends/{friendId}")
   public User deleteFriend(@NotNull @Positive @PathVariable Long id,
                            @NotNull @Positive @PathVariable Long friendId) {
-    User user =  userService.deleteFriendById(id, friendId);
-    log.debug("Friend has been deleted");
-    return user;
+
+    return userService.deleteFriendById(id, friendId);
   }
 
   @GetMapping("/{id}/friends")
   public List<User> getAllFriend(@NotNull @Positive @PathVariable Long id) {
-      List<User> users =  userService.getUserFriendsById(id);
-      log.debug("Users has been received");
-      return users;
+      return userService.getUserFriendsById(id);
   }
 
   @GetMapping("/{id}/friends/common/{otherId}")
-  public List<User> getCommonFriend(@NotNull @Positive @PathVariable Long id,
+  public List<User> getCommonFriends(@NotNull @Positive @PathVariable Long id,
                                     @NotNull @Positive @PathVariable Long otherId) {
-    List<User> commonFriend = userService.getCommonFriend(id, otherId);
-    log.debug("Common friend has been received");
-    return commonFriend;
+   return userService.getCommonFriends(id, otherId);
   }
 }

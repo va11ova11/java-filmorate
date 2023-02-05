@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.user.UserAlreadyExistException;
-import ru.yandex.practicum.filmorate.exception.user.UserNotFoundException;
+import ru.yandex.practicum.filmorate.advice.exception.AlreadyExistException;
+import ru.yandex.practicum.filmorate.advice.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 @Slf4j
@@ -25,7 +25,7 @@ public class UserStorageImpl implements UserStorage{
     if (users.containsKey(id)) {
       return users.get(id);
     } else {
-      throw new UserNotFoundException("User not found");
+      throw new NotFoundException("User not found");
     }
   }
 
@@ -34,12 +34,14 @@ public class UserStorageImpl implements UserStorage{
     boolean userExist = users.values().stream().anyMatch(u -> u.equals(user));
 
     if (userExist) {
-      throw new UserAlreadyExistException(String.format(
+      throw new AlreadyExistException(String.format(
           "Being added user - %s already exist", user.getName()));
     }
-    User newUser = user.toBuilder().id(++userId).build();
-    users.put(newUser.getId(), newUser);
-    return newUser;
+
+    user.setId(++userId);
+    users.put(user.getId(), user);
+    log.debug("New user {}, was successfully added.", user.getName());
+    return user;
   }
 
   @Override
@@ -49,7 +51,7 @@ public class UserStorageImpl implements UserStorage{
       users.remove(id);
       return deleteUser;
     } else {
-      throw new UserNotFoundException("Being deleted user not found");
+      throw new NotFoundException("Being deleted user not found");
     }
   }
 
@@ -59,12 +61,18 @@ public class UserStorageImpl implements UserStorage{
       users.put(user.getId(), user);
       return user;
     } else {
-      throw new UserNotFoundException("Updated user not found");
+      throw new NotFoundException("Updated user not found");
     }
   }
 
   @Override
   public Collection<User> getAll() {
     return users.values();
+  }
+
+  @Override
+  public boolean containsUser(Long id) {
+     if(users.containsKey(id)) return true;
+     else throw new NotFoundException("User not found");
   }
 }

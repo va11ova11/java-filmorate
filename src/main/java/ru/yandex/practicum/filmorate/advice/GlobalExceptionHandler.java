@@ -6,8 +6,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import ru.yandex.practicum.filmorate.exception.NotFoundException;
-import ru.yandex.practicum.filmorate.exception.user.UserAlreadyExistException;
+import ru.yandex.practicum.filmorate.advice.exception.AlreadyExistException;
+import ru.yandex.practicum.filmorate.advice.exception.NotFoundException;
 
 @RestControllerAdvice
 @Slf4j
@@ -28,8 +28,15 @@ public class GlobalExceptionHandler {
   }
 
   @ExceptionHandler
-  @ResponseStatus(HttpStatus.NOT_FOUND)
-  public ErrorMessage handleUserAlreadyExistException(UserAlreadyExistException e) {
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  public ErrorMessage handleUserAlreadyExistException(AlreadyExistException e) {
+    log.error(e.getMessage(), e);
+    return new ErrorMessage(e.getMessage());
+  }
+
+  @ExceptionHandler
+  @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+  public ErrorMessage handleInternalError(Throwable e) {
     log.error(e.getMessage(), e);
     return new ErrorMessage(e.getMessage());
   }

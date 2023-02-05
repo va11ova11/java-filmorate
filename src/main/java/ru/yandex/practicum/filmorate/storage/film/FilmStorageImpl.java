@@ -4,48 +4,51 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.stereotype.Component;
-import ru.yandex.practicum.filmorate.exception.film.FilmAlreadyExist;
-import ru.yandex.practicum.filmorate.exception.film.FilmNotFoundException;
+import ru.yandex.practicum.filmorate.advice.exception.AlreadyExistException;
+import ru.yandex.practicum.filmorate.advice.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
 @Component
 public class FilmStorageImpl implements FilmStorage {
 
-  private final Map<Integer, Film> films;
+  private final Map<Long, Film> films;
+  private Long filmId = 0L;
+
 
   public FilmStorageImpl() {
     films = new HashMap<>();
   }
 
   @Override
-  public Film get(Integer id) {
+  public Film get(Long id) {
     if(films.containsKey(id)) {
       return films.get(id);
     } else {
-      throw new FilmNotFoundException("film not found");
+      throw new NotFoundException("film not found");
     }
   }
 
   @Override
   public Film add(Film film) {
-    films.values().stream()
-        .filter(f -> f.equals(film))
-        .findAny()
-        .orElseThrow(() -> new FilmAlreadyExist(String.format(
-            "Being added film - %s already exist", film.getName()
-        )));
-    films.put(film.getId(), film);
+    boolean filmExist = films.values().stream().anyMatch(f -> f.equals(film));
+
+    if(filmExist) {
+      throw new AlreadyExistException(String.format(
+          "Being film - %s alreadyExist", film.getName()));
+    }
+    film.setId(++filmId);
+    films.put(film.getId(),film);
     return film;
   }
 
   @Override
-  public Film delete(Integer id) {
+  public Film delete(Long id) {
     if(films.containsKey(id)) {
       Film deleteFilm = films.get(id);
       films.remove(deleteFilm.getId());
       return deleteFilm;
     } else {
-      throw new FilmNotFoundException("Being deleted film not found");
+      throw new NotFoundException("Being deleted film not found");
     }
   }
 
@@ -55,7 +58,7 @@ public class FilmStorageImpl implements FilmStorage {
       films.put(film.getId(), film);
       return film;
     } else {
-      throw new FilmNotFoundException("Updated film not found");
+      throw new NotFoundException("Updated film not found");
     }
   }
 

@@ -11,7 +11,7 @@ import ru.yandex.practicum.filmorate.validator.ReleaseDateValidator;
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = ReleaseDateValidator.class)
-public @interface ReleaseDateValidation {
+public @interface ReleaseDate {
   String message() default "Release date must be not before 1895 year";
   Class<?>[] groups() default {};
   Class<? extends Payload>[] payload() default {};

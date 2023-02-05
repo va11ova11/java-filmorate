@@ -5,9 +5,10 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import ru.yandex.practicum.filmorate.exception.user.UserAlreadyExistException;
-import ru.yandex.practicum.filmorate.exception.user.UserNotFoundException;
+import ru.yandex.practicum.filmorate.advice.exception.AlreadyExistException;
+import ru.yandex.practicum.filmorate.advice.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
@@ -17,6 +18,7 @@ public class UserService {
 
   private final UserStorage userStorage;
 
+  @Autowired
   public UserService(UserStorage userStorage) {
     this.userStorage = userStorage;
   }
@@ -24,36 +26,46 @@ public class UserService {
 
   public User addUser(User user) {
     if(user.getName().isBlank()) {
-      User updateNameUser = user.toBuilder().name(user.getLogin()).build();
-      return userStorage.add(updateNameUser);
+      user.setName(user.getLogin());
+      userStorage.add(user);
+      log.debug("New User - {}, update name to login and has been added", user.getName());
+      return user;
     }
-    return userStorage.add(user);
+    User newUser = userStorage.add(user);
+    log.debug("New User - {} has been added", newUser.getName());
+    return newUser;
   }
 
   public User updateUser(User user) {
-    return userStorage.update(user);
+    User updateUser = userStorage.update(user);
+    log.debug("User {} has been updated", updateUser.getName());
+    return updateUser;
   }
 
   public Collection<User> getAll() {
-    return userStorage.getAll();
+    Collection<User> users = userStorage.getAll();
+    log.debug("Users has been received");
+    return users;
   }
 
   public User getUserById(Long id) {
-    return userStorage.get(id);
+    User user =  userStorage.get(id);
+    log.debug("User {} has been received by Id - {}", user.getName(), id);
+    return user;
   }
 
   public User addFriendById(Long id, Long friendId) {
     User user = userStorage.get(id);
     User friend = userStorage.get(friendId);
 
-    if (user.getFriends().contains(friendId)) {
-      throw new UserAlreadyExistException("Friend has already been added");
-    } else {
-      user.addFriend(friendId);
+    if (user.addFriend(friendId)) {
       friend.addFriend(id);
       userStorage.update(user);
       userStorage.update(friend);
+      log.debug("New friend has been added");
       return user;
+    } else {
+      throw new AlreadyExistException("Friend has already been added");
     }
   }
 
@@ -61,15 +73,15 @@ public class UserService {
     User user = userStorage.get(id);
     User friend = userStorage.get(friendId);
 
-    if(user.getFriends().contains(friendId)) {
-      user.deleteFriend(friendId);
+    if(user.deleteFriend(friendId)) {
       friend.deleteFriend(id);
       userStorage.update(user);
       userStorage.update(friend);
+      log.debug("Friend has been deleted");
       return user;
     }
     else {
-      throw new UserNotFoundException("Deleted fried not found");
+      throw new NotFoundException("Deleted fried not found");
     }
   }
 
@@ -79,10 +91,11 @@ public class UserService {
     for(Long friendId : user.getFriends()) {
       friends.add(userStorage.get(friendId));
     }
+    log.debug("Friends has been received");
     return friends;
   }
 
-  public List<User> getCommonFriend(Long id, Long otherId) {
+  public List<User> getCommonFriends(Long id, Long otherId) {
     Set<Long> friendsId1 = userStorage.get(id).getFriends();
     Set<Long> friendsId2 = userStorage.get(otherId).getFriends();
 
@@ -103,6 +116,11 @@ public class UserService {
     for(Long friendId : commonFriendId) {
       commonFriends.add(userStorage.get(friendId));
     }
+    log.debug("Common friends has been received");
     return commonFriends;
+  }
+
+  public boolean containsUser(Long id) {
+    return userStorage.containsUser(id);
   }
 }
