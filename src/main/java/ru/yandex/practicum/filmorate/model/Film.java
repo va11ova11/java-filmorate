@@ -1,30 +1,39 @@
 package ru.yandex.practicum.filmorate.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.PastOrPresent;
-import javax.validation.constraints.Positive;
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-import lombok.Builder;
-import lombok.Value;
+import lombok.Data;
+import ru.yandex.practicum.filmorate.validator.annotation.ReleaseDate;
 
 
-@Value
-@Builder(toBuilder = true)
+@Data
 public class Film {
-  int id;
-  @NotEmpty(message = "Film name is required")
-  String name;
-  @NotEmpty(message = "Film description is required")
+  private Long id;
+  @NotBlank(message = "Film name is required")
+  private String name;
+  @NotBlank(message = "Film description is required")
   @Size(max = 200, message = "Description length should be no more than 200 characters.")
-  String description;
+  private String description;
   @NotNull(message = "Release date is required.")
   @JsonFormat(pattern = "yyyy-MM-dd")
-  @PastOrPresent(message = "Release date of the film cannot be in the future.")
-  LocalDate releaseDate;
+  @ReleaseDate
+  private LocalDate releaseDate;
   @NotNull(message = "Duration is required")
   @Positive(message = "The duration of the film cannot be negative.")
-  int duration;
+  private Integer duration;
+  private Set<Long> userLikes = new HashSet<>();
+  private Integer rate = 0;
+  public boolean addUserLikes(Long userId) {
+    return userLikes.add(userId);
+  }
+
+  public boolean deleteUserLike(Long userId) {
+    return userLikes.remove(userId);
+  }
 }
