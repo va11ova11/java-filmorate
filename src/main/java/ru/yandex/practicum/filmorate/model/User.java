@@ -13,19 +13,19 @@ import ru.yandex.practicum.filmorate.validator.annotation.ContainsSpace;
 
 @Data
 public class User {
-  Long id;
+  private Long id;
   @NotNull(message = "Email is required")
   @Email
-  String email;
+  private String email;
   @NotBlank(message = "Login is required")
   @ContainsSpace(message = "Login contains space")
-  String login;
-  String name;
+  private String login;
+  private String name;
   @NotNull(message = "Birthday is required")
   @Past
   @JsonFormat(pattern = "yyyy-MM-dd")
-  LocalDate birthday;
-  Set<Long> friends = new HashSet<>();
+  private LocalDate birthday;
+  private Set<Long> friends = new HashSet<>();
   public boolean addFriend(Long id) {
     return friends.add(id);
   }

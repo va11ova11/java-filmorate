@@ -5,8 +5,8 @@ import java.util.List;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,15 +21,11 @@ import ru.yandex.practicum.filmorate.service.FilmService;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/films")
 public class FilmController {
 
   private final FilmService filmService;
-
-  @Autowired
-  public FilmController(FilmService filmService) {
-    this.filmService = filmService;
-  }
 
   @PostMapping
   public Film addFilm(@RequestBody @NotNull @Valid Film film) {

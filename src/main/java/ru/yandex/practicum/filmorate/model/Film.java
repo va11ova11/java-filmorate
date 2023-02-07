@@ -14,21 +14,21 @@ import ru.yandex.practicum.filmorate.validator.annotation.ReleaseDate;
 
 @Data
 public class Film {
-  Long id;
+  private Long id;
   @NotBlank(message = "Film name is required")
-  String name;
+  private String name;
   @NotBlank(message = "Film description is required")
   @Size(max = 200, message = "Description length should be no more than 200 characters.")
-  String description;
+  private String description;
   @NotNull(message = "Release date is required.")
   @JsonFormat(pattern = "yyyy-MM-dd")
   @ReleaseDate
-  LocalDate releaseDate;
+  private LocalDate releaseDate;
   @NotNull(message = "Duration is required")
   @Positive(message = "The duration of the film cannot be negative.")
-  Integer duration;
-  Set<Long> userLikes = new HashSet<>();
-  Integer rate = 0;
+  private Integer duration;
+  private Set<Long> userLikes = new HashSet<>();
+  private Integer rate = 0;
   public boolean addUserLikes(Long userId) {
     return userLikes.add(userId);
   }
