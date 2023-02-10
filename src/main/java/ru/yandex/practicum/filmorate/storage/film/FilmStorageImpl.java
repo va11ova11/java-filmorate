@@ -3,12 +3,12 @@ package ru.yandex.practicum.filmorate.storage.film;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.advice.exception.AlreadyExistException;
 import ru.yandex.practicum.filmorate.advice.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
 
-@Component
+@Repository
 public class FilmStorageImpl implements FilmStorage {
 
   private final Map<Long, Film> films;
@@ -24,7 +24,7 @@ public class FilmStorageImpl implements FilmStorage {
     if(films.containsKey(id)) {
       return films.get(id);
     } else {
-      throw new NotFoundException("film not found");
+      throw new NotFoundException(String.format("Film-%s not found", id));
     }
   }
 
@@ -34,7 +34,7 @@ public class FilmStorageImpl implements FilmStorage {
 
     if(filmExist) {
       throw new AlreadyExistException(String.format(
-          "Being film - %s alreadyExist", film.getName()));
+          "Being film - %s %s alreadyExist", film.getId(), film.getName()));
     }
     film.setId(++filmId);
     films.put(film.getId(),film);
@@ -48,7 +48,7 @@ public class FilmStorageImpl implements FilmStorage {
       films.remove(deleteFilm.getId());
       return deleteFilm;
     } else {
-      throw new NotFoundException("Being deleted film not found");
+      throw new NotFoundException(String.format("Being deleted Film-%s not found", id));
     }
   }
 
@@ -58,7 +58,8 @@ public class FilmStorageImpl implements FilmStorage {
       films.put(film.getId(), film);
       return film;
     } else {
-      throw new NotFoundException("Updated film not found");
+      throw new NotFoundException(String.format("Updated Film-%s %s not found",
+          film.getId(), film.getName()));
     }
   }
 

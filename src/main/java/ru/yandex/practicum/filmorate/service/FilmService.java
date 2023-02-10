@@ -21,14 +21,19 @@ public class FilmService {
 
   public Film addFilm(Film film) {
     Film newFilm = filmStorage.add(film);
-    log.debug("New Film - {}, id - {}, has been added", newFilm.getName(), newFilm.getId());
+    log.debug("New Film id - {}, {}, has been added", newFilm.getName(), newFilm.getId());
     return newFilm;
   }
 
   public Film updateFilm(Film film) {
     Film updateFilm = filmStorage.update(film);
-    log.debug("Film {}, id - {}, has been updated", updateFilm.getName(), film.getId());
+    log.debug("Film id - {}, {}, has been updated", updateFilm.getName(), film.getId());
     return updateFilm;
+  }
+  public Film deleteFilmById(Long id) {
+    Film deleteFilm = filmStorage.delete(id);
+    log.debug("Film id - {}, {}, has been deleted", deleteFilm.getName(), deleteFilm.getId());
+    return deleteFilm;
   }
 
   public Collection<Film> getAll() {
@@ -39,11 +44,11 @@ public class FilmService {
 
   public Film getFilmById(Long id) {
     Film film = filmStorage.get(id);
-    log.debug("Film {}, id - {}, has been received by id", film.getName(), id);
+    log.debug("Film id - {}, {}, has been received by id", film.getName(), id);
     return film;
   }
 
-  public Film likeFilmByUserId(Long id, Long userId) {
+  public Film likeByFilmIdAndUserId(Long id, Long userId) {
     Film film = filmStorage.get(id);
     if (userService.containsUser(userId)) {
       if (film.addUserLikes(userId)) {
@@ -54,12 +59,12 @@ public class FilmService {
         throw new AlreadyExistException(String.format("User id - %s like already exist", userId));
       }
     } else {
-      throw new NotFoundException(String.format("User id - %s not found", userId));
+      throw new NotFoundException(String.format("User-%s who like film not found ", userId));
     }
   }
 
 
-  public Film deleteLikeFilmByUserId(Long id, Long userId) {
+  public Film deleteLikeByFilmIdAndUserId(Long id, Long userId) {
     Film film = filmStorage.get(id);
     if (userService.containsUser(userId)) {
       if (film.deleteUserLike(userId)) {
@@ -75,7 +80,7 @@ public class FilmService {
   }
 
   public List<Film> getPopularFilms(Integer count) {
-    List<Film> films =  filmStorage.getAll().stream()
+    List<Film> films = filmStorage.getAll().stream()
         .sorted((o1, o2) -> Integer.compare(o2.getRate(), o1.getRate()))
         .limit(count)
         .collect(Collectors.toList());

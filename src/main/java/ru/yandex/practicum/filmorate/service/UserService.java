@@ -38,6 +38,11 @@ public class UserService {
     log.debug("User id - {}, {} has been updated", updateUser.getId(), user.getName());
     return updateUser;
   }
+  public User deleteUserById(Long id) {
+    User deleteUser = userStorage.delete(id);
+    log.debug("User id - {}, {}, has been deleted", deleteUser.getId(), deleteUser.getName());
+    return deleteUser;
+  }
 
   public Collection<User> getAll() {
     Collection<User> users = userStorage.getAll();
@@ -94,11 +99,12 @@ public class UserService {
     return friends;
   }
 
-  public List<User> getCommonFriends(Long id, Long otherId) {
-    Set<Long> friendsId1 = userStorage.get(id).getFriends();
-    Set<Long> friendsId2 = userStorage.get(otherId).getFriends();
+  public List<User> getCommonFriendsByIds(Long user1Id, Long user2Id) {
+    Set<Long> friendsId1 = userStorage.get(user1Id).getFriends();
+    Set<Long> friendsId2 = userStorage.get(user2Id).getFriends();
 
     if (friendsId1 == null || friendsId2.isEmpty()) {
+      log.debug("User-{} and User-{} are have not common friends", user1Id, user2Id);
       return new ArrayList<>();
     }
 
@@ -115,11 +121,13 @@ public class UserService {
     for (Long friendId : commonFriendId) {
       commonFriends.add(userStorage.get(friendId));
     }
-    log.debug("Common friends has been received");
+    log.debug("Common friends users {} and {} has been received", user1Id, user2Id);
     return commonFriends;
   }
 
   public boolean containsUser(Long id) {
     return userStorage.containsUser(id);
   }
+
+
 }
