@@ -11,6 +11,7 @@ import ru.yandex.practicum.filmorate.advice.exception.AlreadyExistException;
 import ru.yandex.practicum.filmorate.advice.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+import ru.yandex.practicum.filmorate.storage.user.impl.UserDbStorage;
 
 @Slf4j
 @RequiredArgsConstructor

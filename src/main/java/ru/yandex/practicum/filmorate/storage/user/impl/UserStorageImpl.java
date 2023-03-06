@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.user;
+package ru.yandex.practicum.filmorate.storage.user.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.advice.exception.AlreadyExistException;
 import ru.yandex.practicum.filmorate.advice.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
+import ru.yandex.practicum.filmorate.storage.user.UserStorage;
 
 @Repository
-public class UserStorageImpl implements UserStorage{
+public class UserStorageImpl implements UserStorage {
 
   private final Map<Long, User> users;
   private Long userId = 0L;
