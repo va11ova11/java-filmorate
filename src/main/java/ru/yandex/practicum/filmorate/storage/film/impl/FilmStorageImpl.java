@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.film;
+package ru.yandex.practicum.filmorate.storage.film.impl;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 import ru.yandex.practicum.filmorate.advice.exception.AlreadyExistException;
 import ru.yandex.practicum.filmorate.advice.exception.NotFoundException;
 import ru.yandex.practicum.filmorate.model.Film;
+import ru.yandex.practicum.filmorate.storage.film.FilmStorage;
 
 @Repository
 public class FilmStorageImpl implements FilmStorage {
